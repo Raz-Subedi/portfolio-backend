@@ -1,16 +1,45 @@
+### General ###
 HELP.md
-.gradle
+
+### Build ###
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+### Spring Boot ###
+target/
+
+### Java ###
+*.class
+*.log
+*.jar
+*.war
+*.nar
+*.zip
+*.tar.gz
+
+### Logs ###
+logs/
+*.log
+
+### OS Files ###
+.DS_Store
+Thumbs.db
+
+### Environment / Secrets ###
+.env
+.env.local
+application-local.properties
+application-dev.properties
 
 ### STS ###
 .apt_generated
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
 .sts4-cache
 bin/
@@ -18,7 +47,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
