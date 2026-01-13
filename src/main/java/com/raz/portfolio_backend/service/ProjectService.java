@@ -1,19 +1,22 @@
 package com.raz.portfolio_backend.service;
 
 import com.raz.portfolio_backend.entity.Project;
+import com.raz.portfolio_backend.exception.ResourceNotFoundException;
 import com.raz.portfolio_backend.repository.ProjectRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
+    public Project createProject(Project project) {
+        return projectRepository.save(project);
     }
 
     public List<Project> getAllProjects() {
@@ -24,13 +27,9 @@ public class ProjectService {
         return projectRepository.findById(id);
     }
 
-    public Project createProject(Project project) {
-        return projectRepository.save(project);
-    }
-
     public Project updateProject(Long id, Project projectDetails) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
 
         project.setTitle(projectDetails.getTitle());
         project.setDescription(projectDetails.getDescription());
@@ -44,7 +43,7 @@ public class ProjectService {
 
     public void deleteProject(Long id) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
         projectRepository.delete(project);
     }
 }
