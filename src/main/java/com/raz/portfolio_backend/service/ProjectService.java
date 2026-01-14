@@ -1,5 +1,6 @@
 package com.raz.portfolio_backend.service;
 
+import com.raz.portfolio_backend.dto.ProjectRequest;
 import com.raz.portfolio_backend.entity.Project;
 import com.raz.portfolio_backend.exception.ResourceNotFoundException;
 import com.raz.portfolio_backend.repository.ProjectRepository;
@@ -15,8 +16,18 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public Project createProject(Project project) {
-        return projectRepository.save(project);
+    public Long createProject(ProjectRequest request) {
+
+        Project project = Project.builder()
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .techStack(request.getTechStack())
+                .githubUrl(request.getGithubUrl())
+                .liveDemoUrl(request.getLiveDemoUrl())
+                .imageUrl(request.getImageUrl())
+                .build();
+        Project save = projectRepository.save(project);
+        return save.getId();
     }
 
     public List<Project> getAllProjects() {
@@ -27,18 +38,19 @@ public class ProjectService {
         return projectRepository.findById(id);
     }
 
-    public Project updateProject(Long id, Project projectDetails) {
+    public Long updateProject(Long id, ProjectRequest request) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
 
-        project.setTitle(projectDetails.getTitle());
-        project.setDescription(projectDetails.getDescription());
-        project.setTechStack(projectDetails.getTechStack());
-        project.setGithubUrl(projectDetails.getGithubUrl());
-        project.setLiveDemoUrl(projectDetails.getLiveDemoUrl());
-        project.setImageUrl(projectDetails.getImageUrl());
+        project.setTitle(request.getTitle());
+        project.setDescription(request.getDescription());
+        project.setTechStack(request.getTechStack());
+        project.setGithubUrl(request.getGithubUrl());
+        project.setLiveDemoUrl(request.getLiveDemoUrl());
+        project.setImageUrl(request.getImageUrl());
 
-        return projectRepository.save(project);
+        Project save = projectRepository.save(project);
+        return save.getId();
     }
 
     public void deleteProject(Long id) {
